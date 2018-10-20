@@ -1,5 +1,6 @@
 package com.example.rish.ordercoffee;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cream,choc;
     private Button plus,minus,getTotal;
     private int total_cost,quantity, price=20;
-    private EditText name;
-    private String user_name=null;
+    private EditText name,email;
+    private String user_name=null,user_email=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         name=findViewById(R.id.name);
+        email=findViewById(R.id.email);
 
 
         cream= findViewById(R.id.whipped_cream_checkbox);
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         getTotal=findViewById(R.id.total);
 
         show_quant=findViewById(R.id.quant);
-        result=findViewById(R.id.res);
+       // result=findViewById(R.id.res);
 
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                user_name=name.getText().toString();
+                user_name= name.getText().toString();
+                user_email= email.getText().toString();
 
                 if(cream.isChecked())
                 {
@@ -82,7 +85,19 @@ public class MainActivity extends AppCompatActivity {
 
                 total_cost=price*quantity;
                 price=20;
-                result.setText(user_name+" you have to pay : Rs"+total_cost+"");
+                Toast.makeText(MainActivity.this,user_name,Toast.LENGTH_SHORT).show();
+                Intent intent= new Intent(MainActivity.this,BillActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("User Name",user_name);
+                bundle.putString("User Email",user_email);
+                bundle.putString("Total cost",total_cost+"");
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+
+
+
+                //result.setText(user_name+" you have to pay : Rs"+total_cost+"");
             }
         });
 
